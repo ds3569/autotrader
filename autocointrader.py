@@ -5,9 +5,9 @@ import datetime
 import requests
 import numpy as np
 
-access = "UbQ8R3gOw57DiBs0xGs0Q3OvFC0RwfF8UjvDca3x"
-secret = "BxJJ1Qor38oSTda0VIyVdxhmoJ2WOltSdxWPifyz"
-myToken = "xoxb-3070611612964-3068340948435-OpZiVjxiHv13MfwA4S3mjxg7"
+access = "access-key"
+secret = "secret-key"
+myToken = "token"
 
 def post_message(token, channel, text):
     """슬랙 메시지 전송"""
