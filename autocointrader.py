@@ -5,9 +5,9 @@ import datetime
 import requests
 import numpy as np
 
-access = "access-code"
-secret = "secret-code"
-myToken = "token"
+access = "UbQ8R3gOw57DiBs0xGs0Q3OvFC0RwfF8UjvDca3x"
+secret = "BxJJ1Qor38oSTda0VIyVdxhmoJ2WOltSdxWPifyz"
+myToken = "xoxb-3070611612964-3068340948435-OpZiVjxiHv13MfwA4S3mjxg7"
 
 def post_message(token, channel, text):
     """슬랙 메시지 전송"""
@@ -94,14 +94,14 @@ upbit = pyupbit.Upbit(access, secret)
 print("autotrade start")
 # 시작 메세지 슬랙 전송
 post_message(myToken,"#check", "autotrade start")
+coin = choose_coin()
 
 while True:
     try:
-        coin = choose_coin()
         k = bestK(coin)
         now = datetime.datetime.now()
         start_time = get_start_time(coin)
-        end_time = start_time + datetime.timedelta(hours=4)
+        end_time = start_time + datetime.timedelta(days=1)
 
         if start_time < now < end_time - datetime.timedelta(seconds=10):
             target_price = get_target_price(coin, k)
@@ -118,6 +118,7 @@ while True:
                 if (pyupbit.get_current_price(coin) / btc) > 5000:
                     sell_result = upbit.sell_market_order(coin, btc * 0.9995)
                     post_message(myToken, "#check", coin + "sell : " + str(sell_result))
+                    coin = choose_coin()
                     time.sleep(1)
     except Exception as e:
         print(e)
