@@ -100,11 +100,11 @@ post_message(myToken,"#check", "autotrade start")
 coin = choose_coin()
 k = bestK(coin)
 ma15 = get_ma15(coin)
+start_time = get_start_time(coin)
 
 while True:
     try:
         now = datetime.datetime.now()
-        start_time = get_start_time(coin)
         end_time = start_time + datetime.timedelta(days=1)
 
         if start_time < now < end_time - datetime.timedelta(seconds=10):
@@ -113,11 +113,14 @@ while True:
             if target_price < current_price and ma15 < current_price:
                 krw = get_balance("KRW")
                 if krw > 5000:
-                    buy_result = upbit.buy_market_order(coin, krw*0.9995)
-                    post_message(myToken,"#check", coin + "buy\n" +str(buy_result))
+                    buy_result = upbit.buy_market_order(coin, krw * 0.9995)
+                    post_message(myToken, "#check", coin + "buy\n" + str(buy_result))
         else:
             btc = get_balance(coin)
             mine = get_current_price(coin)
+            start_time = get_start_time(coin)
+            k = bestK(coin)
+            ma15 = get_ma15(coin)
             if (btc * mine) > 5000:
                 sell_result = upbit.sell_market_order(coin, btc)
                 post_message(myToken, "#check", coin + "sell\n" + str(sell_result))
