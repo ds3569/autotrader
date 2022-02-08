@@ -55,6 +55,7 @@ def bestK(coin):
         k_dic[k] = float(ror)
 
     k_dic_sorted = sorted(k_dic.items(), key=operator.itemgetter(1), reverse=True)
+    post_message(myToken, "#check", "k : " + k_dic_sorted[0][0])
     return k_dic_sorted[0][0]
 
 def get_target_price(ticker, k):
@@ -96,10 +97,10 @@ print("autotrade start")
 # 시작 메세지 슬랙 전송
 post_message(myToken,"#check", "autotrade start")
 coin = choose_coin()
+k = bestK(coin)
 
 while True:
     try:
-        k = bestK(coin)
         now = datetime.datetime.now()
         start_time = get_start_time(coin)
         end_time = start_time + datetime.timedelta(days=1)
@@ -120,6 +121,7 @@ while True:
                 sell_result = upbit.sell_market_order(coin, btc)
                 post_message(myToken, "#check", coin + "sell\n" + str(sell_result))
                 coin = choose_coin()
+                k = bestK(coin)
                 time.sleep(1)
     except Exception as e:
         print(e)
