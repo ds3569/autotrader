@@ -55,7 +55,7 @@ def bestK(coin):
         k_dic[k] = float(ror)
 
     k_dic_sorted = sorted(k_dic.items(), key=operator.itemgetter(1), reverse=True)
-    post_message(myToken, "#check", "k : " + float(k_dic_sorted[0][0]) + "\n ror : \n" + float(ror))
+    post_message(myToken, "#check", "k : " + str(k_dic_sorted[0]))
     return k_dic_sorted[0][0]
 
 def get_target_price(ticker, k):
