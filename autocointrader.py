@@ -78,7 +78,7 @@ def get_balance(ticker):
     """잔고 조회"""
     balances = upbit.get_balances()
     for b in balances:
-        if b['currency'] == ticker:
+        if b['currency'] == ticker.strip("KRW-"):
             if b['balance'] is not None:
                 return float(b['balance'])
             else:
@@ -114,12 +114,12 @@ while True:
                     post_message(myToken,"#check", coin + "buy : " +str(buy_result))
         else:
             btc = get_balance(coin)
-            if btc > 0:
-                if (pyupbit.get_current_price(coin) / btc) > 5000:
-                    sell_result = upbit.sell_market_order(coin, btc * 0.9995)
-                    post_message(myToken, "#check", coin + "sell : " + str(sell_result))
-                    coin = choose_coin()
-                    time.sleep(1)
+            mine = get_current_price(coin)
+            if (btc * mine) > 5000:
+                sell_result = upbit.sell_market_order(coin, btc)
+                post_message(myToken, "#check", coin + "sell : " + str(sell_result))
+                coin = choose_coin()
+                time.sleep(1)
     except Exception as e:
         print(e)
         post_message(myToken,"#check", e)
