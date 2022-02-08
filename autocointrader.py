@@ -27,6 +27,7 @@ def choose_coin():
             coin_dic[i] = 0.0
 
     coin_dic_sorted = sorted(coin_dic.items(), key=operator.itemgetter(1), reverse=True)
+    post_message(myToken, "#check", coin_dic_sorted[0][0])
     return coin_dic_sorted[0][0]
 
 def get_ror(k, coin):
@@ -111,13 +112,13 @@ while True:
                 krw = get_balance("KRW")
                 if krw > 5000:
                     buy_result = upbit.buy_market_order(coin, krw*0.9995)
-                    post_message(myToken,"#check", coin + "buy : " +str(buy_result))
+                    post_message(myToken,"#check", coin + "buy\n" +str(buy_result))
         else:
             btc = get_balance(coin)
             mine = get_current_price(coin)
             if (btc * mine) > 5000:
                 sell_result = upbit.sell_market_order(coin, btc)
-                post_message(myToken, "#check", coin + "sell : " + str(sell_result))
+                post_message(myToken, "#check", coin + "sell\n" + str(sell_result))
                 coin = choose_coin()
                 time.sleep(1)
     except Exception as e:
