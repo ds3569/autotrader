@@ -74,6 +74,7 @@ def get_ma15(ticker):
     """15일 이동 평균선 조회"""
     df = pyupbit.get_ohlcv(ticker, interval="day", count=15)
     ma15 = df['close'].rolling(15).mean().iloc[-1]
+    post_message(myToken, "#check", ma15)
     return ma15
 
 def get_balance(ticker):
@@ -98,6 +99,7 @@ print("autotrade start")
 post_message(myToken,"#check", "autotrade start")
 coin = choose_coin()
 k = bestK(coin)
+ma15 = get_ma15(coin)
 
 while True:
     try:
@@ -107,7 +109,6 @@ while True:
 
         if start_time < now < end_time - datetime.timedelta(seconds=10):
             target_price = get_target_price(coin, k)
-            ma15 = get_ma15(coin)
             current_price = get_current_price(coin)
             if target_price < current_price and ma15 < current_price:
                 krw = get_balance("KRW")
@@ -122,6 +123,7 @@ while True:
                 post_message(myToken, "#check", coin + "sell\n" + str(sell_result))
                 coin = choose_coin()
                 k = bestK(coin)
+                ma15 = get_ma15(coin)
                 time.sleep(1)
     except Exception as e:
         print(e)
